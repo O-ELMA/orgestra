@@ -49,7 +49,5 @@ $RECYCLE.BIN/
 **/venv/
 
 # Ignore My stuff
-resources
-
 force-app/main/default/classes/MetadataDefinitionSeedBatch.cls
 force-app/main/default/classes/MetadataDefinitionSeedBatch.cls-meta.xml

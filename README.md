@@ -40,7 +40,7 @@ sf apex run --target-org <alias> --file scripts/apex/postDeploy.apex
 
 #### 3. Via the VSCode GUI
 
-1. Download the [ZIP](https://github.com/O-ELMA/orgestra) then unzip it
+1. Download the [ZIP](https://github.com/O-ELMA/orgestra/archive/refs/heads/master.zip) then unzip it
 2. Open it the unzipped folder with VSCode
 3. Authorise the Org you want to deploy to
 4. Right click the `manifest/package.xml` and choose *Deploy Source in Manifest to Org*
