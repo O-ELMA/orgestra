@@ -1,18 +1,68 @@
-# Salesforce DX Project: Next Steps
+# Orgestra — Salesforce Change Orchestrator
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+![Banner](./resources/banner.png)
 
-## How Do You Plan to Deploy Your Changes?
+**Orgestra** is a Salesforce org management tool that tracks and displays metadata changes across your org in near real time.
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+It polls ~279 metadata types every 10 minutes via the Tooling API and standard SOQL, stores the results in a custom object, and presents them through a filterable Lightning Web Component dashboard.
 
-## Configure Your Salesforce DX Project
+---
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+## Deployment
 
-## Read All About It
+### Prerequisites
 
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+- [Salesforce CLI (`sf`)](https://developer.salesforce.com/tools/salesforcecli) installed.
+
+### Deploy & Initialize - 3 Options
+
+#### 1. With One Click
+
+<a href="https://githubsfdeploy.herokuapp.com?owner=OELMA&repo=orgestra">
+  <img alt="Deploy to Salesforce" src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
+</a>
+
+#### 2. Via the CLI
+
+```bash
+# Clone
+git clone https://github.com/O-ELMA/orgestra && cd orgestra
+
+# Authorise the Org via the command or the VSCode GUI
+sf org login web --alias <alias> --instance-url https://login.salesforce.com --set-default
+
+# Deploy via the command or the VSCode GUI
+sf project deploy start --target-org <alias>
+
+# Run post-deploy initialization
+sf apex run --target-org <alias> --file scripts/apex/postDeploy.apex
+```
+
+#### 3. Via the VSCode GUI
+
+1. Download the [ZIP](https://github.com/O-ELMA/orgestra) then unzip it
+2. Open it the unzipped folder with VSCode
+3. Authorise the Org you want to deploy to
+4. Right click the `manifest/package.xml` and choose *Deploy Source in Manifest to Org*
+5. Go to the ***Developer Console***
+6. Open ***anonymous Apex***
+7. Copy & Paste the following code below
+
+```apex
+// Full historical sync
+MetadataChangeSyncScheduler.syncAll();
+
+// Set up the recurring 10-minute schedule
+MetadataChangeSyncScheduler.scheduleEveryTenMinutes();
+```
+
+---
+
+## Usage
+
+1. Navigate to the **Orgestra** app in your Salesforce org.
+2. The home page displays the **Metadata Changes** component.
+3. Use the filters to narrow results by type, API name, date, or user.
+4. Click the refresh button to load the latest data.
+
+The dashboard reflects the state of `Metadata_Change__c`, which is kept current by the background batch job running every 10 minutes.
