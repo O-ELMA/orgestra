@@ -18,7 +18,7 @@ It polls ~279 metadata types every 10 minutes via the Tooling API and standard S
 
 #### 1. With One Click
 
-<a href="https://githubsfdeploy.herokuapp.com?owner=OELMA&repo=orgestra">
+<a href="https://githubsfdeploy.herokuapp.com?owner=O-ELMA&repo=orgestra">
   <img alt="Deploy to Salesforce" src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
 
