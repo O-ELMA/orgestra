@@ -1,36 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>*</members>
+        <members>MetadataChangeSyncBatch</members>
+        <members>MetadataChangeSyncScheduler</members>
+        <members>Utils</members>
+        <members>MetadataChangesToolingApiController</members>
+        <members>MetadataDefinition</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>*</members>
-        <name>ApexComponent</name>
-    </types>
-    <types>
-        <members>*</members>
+        <members>GetSessionId</members>
         <name>ApexPage</name>
     </types>
     <types>
-        <members>*</members>
-        <name>ApexTestSuite</name>
+        <members>Metadata_Change__c</members>
+        <name>CustomObject</name>
     </types>
     <types>
-        <members>*</members>
-        <name>ApexTrigger</name>
+        <members>Metadata_Change__c.API_Name__c</members>
+        <members>Metadata_Change__c.Last_Modified_By__c</members>
+        <members>Metadata_Change__c.Last_Modified_Date_Time__c</members>
+        <members>Metadata_Change__c.Type__c</members>
+        <name>CustomField</name>
     </types>
     <types>
-        <members>*</members>
-        <name>AuraDefinitionBundle</name>
-    </types>
-    <types>
-        <members>*</members>
+        <members>metadataChanges</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
-        <members>*</members>
-        <name>StaticResource</name>
+		<members>Orgestra</members>
+		<name>CustomApplication</name>
+	</types>
+    <types>
+		<members>Cockpit</members>
+		<name>FlexiPage</name>
+	</types>
+    <types>
+        <members>logo</members>
+        <name>ContentAsset</name>
     </types>
-    <version>59.0</version>
+    <types>
+        <members>Orgestra_User</members>
+        <name>PermissionSet</name>
+    </types>
+    <version>66.0</version>
 </Package>

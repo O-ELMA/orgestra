@@ -1,0 +1,61 @@
+.metadata-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.75rem;
+}
+
+.metadata-filter,
+.metadata-filter-action {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.metadata-filter {
+    flex: 1 1 200px;
+    min-width: 180px;
+}
+
+.metadata-filter_datetime {
+    flex: 1.4 1 260px;
+    min-width: 240px;
+}
+
+.metadata-filter-action {
+    flex: 0 0 auto;
+}
+
+.metadata-label {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-height: 1.5rem;
+    margin-bottom: 0.25rem;
+    line-height: 1.5rem;
+}
+
+.metadata-label-text {
+    font-weight: 700;
+}
+
+.metadata-label_spacer {
+    visibility: hidden;
+}
+
+.metadata-filter lightning-input,
+.metadata-filter lightning-record-picker,
+.metadata-filter .slds-form-element,
+.metadata-filter .slds-combobox_container {
+    width: 100%;
+}
+
+.metadata-filter .slds-form-element__control,
+.metadata-filter .slds-combobox,
+.metadata-filter .slds-combobox__form-element {
+    height: var(--lwc-formInputHeight, 1.875rem);
+}
+
+.metadata-filter .slds-input {
+    height: 100%;
+}

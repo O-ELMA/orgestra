@@ -1,0 +1,183 @@
+<template>
+    <lightning-card title="Metadata Changes" icon-name="standard:bundle_config">
+        <div class="slds-p-horizontal_medium slds-p-bottom_small">
+            <div class="metadata-filters">
+                <div class="metadata-filter">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label metadata-label" for="metadata-type-input">
+                            <span class="metadata-label-text">Type</span>
+                            <lightning-helptext content="Pick the metadata type to filter stored changes."></lightning-helptext>
+                        </label>
+                        <div class="slds-form-element__control">
+                            <div class={typeComboboxClass} aria-expanded={typeDropdownOpen} aria-haspopup="listbox" role="combobox">
+                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                                    <input
+                                        id="metadata-type-input"
+                                        data-type-input
+                                        type="text"
+                                        class="slds-input slds-combobox__input"
+                                        placeholder="Select type"
+                                        autocomplete="off"
+                                        value={typeInputDisplayValue}
+                                        oninput={handleTypeInput}
+                                        onfocus={handleTypeFocus}
+                                        onblur={handleTypeBlur}
+                                        disabled={isLoading} />
+                                    <template lwc:if={hasSelectedType}>
+                                        <button
+                                            type="button"
+                                            class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
+                                            title="Clear type"
+                                            onmousedown={handleTypeClear}
+                                            disabled={isLoading}>
+                                            <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Clear type"></lightning-icon>
+                                            <span class="slds-assistive-text">Clear type</span>
+                                        </button>
+                                    </template>
+                                    <template lwc:else>
+                                        <lightning-icon
+                                            icon-name="utility:down"
+                                            size="x-small"
+                                            class="slds-input__icon slds-input__icon_right">
+                                        </lightning-icon>
+                                    </template>
+                                </div>
+                                <div class="slds-dropdown slds-dropdown_length-7 slds-dropdown_fluid" role="listbox">
+                                    <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                        <template for:each={filteredTypeOptions} for:item="opt">
+                                            <li key={opt.value} role="presentation" class="slds-listbox__item">
+                                                <div
+                                                    class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                                                    role="option"
+                                                    data-value={opt.value}
+                                                    onmousedown={handleTypeSelect}>
+                                                    <span class="slds-media__body">
+                                                        <span class="slds-truncate" title={opt.label}>{opt.label}</span>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        </template>
+                                        <template lwc:if={noTypeMatches}>
+                                            <li role="presentation" class="slds-listbox__item">
+                                                <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small">
+                                                    <span class="slds-media__body slds-text-color_weak">No matches</span>
+                                                </div>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metadata-filter">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label metadata-label" for="metadata-api-name-input">
+                            <span class="metadata-label-text">Metadata API Name</span>
+                            <lightning-helptext content="Enter part of the API name. Leave empty to show all names."></lightning-helptext>
+                        </label>
+                        <div class="slds-form-element__control">
+                            <lightning-input
+                                id="metadata-api-name-input"
+                                variant="label-hidden"
+                                aria-label="Metadata API Name"
+                                type="text"
+                                placeholder="Contains..."
+                                value={apiNameFilter}
+                                onchange={handleApiNameChange}
+                                disabled={isLoading}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metadata-filter metadata-filter_datetime">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label metadata-label" for="metadata-changed-after-input">
+                            <span class="metadata-label-text">Changed after</span>
+                            <lightning-helptext content="Show only changes made after this exact date/time. Leave empty to include older changes too."></lightning-helptext>
+                        </label>
+                        <div class="slds-form-element__control">
+                            <lightning-input
+                                id="metadata-changed-after-input"
+                                variant="label-hidden"
+                                aria-label="Changed after"
+                                type="datetime"
+                                value={changedAfter}
+                                onchange={handleChangedAfterChange}
+                                disabled={isLoading}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metadata-filter">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label metadata-label" for="metadata-modified-by-input">
+                            <span class="metadata-label-text">Last modified by</span>
+                            <lightning-helptext content="Search and select a user. Leave empty to include all users."></lightning-helptext>
+                        </label>
+                        <div class="slds-form-element__control">
+                            <lightning-record-picker
+                                id="metadata-modified-by-input"
+                                label="Last modified by"
+                                variant="label-hidden"
+                                placeholder="Search users..."
+                                object-api-name="User"
+                                value={selectedUserId}
+                                filter={activeUserFilter}
+                                display-info={userDisplayInfo}
+                                matching-info={userMatchingInfo}
+                                onchange={handleUserChange}
+                                disabled={isLoading}>
+                            </lightning-record-picker>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metadata-filter-action">
+                    <div class="metadata-label metadata-label_spacer"></div>
+                    <lightning-button-icon
+                        icon-name="utility:refresh"
+                        variant="brand"
+                        onclick={handleGetChanges}
+                        disabled={isLoading}>
+                    >
+                    </lightning-button-icon>
+                </div>
+            </div>
+        </div>
+
+        <template lwc:if={error}>
+            <div class="slds-p-around_medium slds-text-color_error" role="alert">
+                {error}
+            </div>
+        </template>
+
+        <div class="slds-is-relative slds-p-horizontal_medium slds-p-bottom_medium">
+            <template lwc:if={isLoading}>
+                <lightning-spinner alternative-text="Loading metadata..." size="medium"></lightning-spinner>
+            </template>
+
+            <template lwc:if={hasRecords}>
+                <div class="slds-text-body_small slds-p-bottom_x-small slds-text-color_weak">
+                    {recordCountLabel}
+                </div>
+                <lightning-datatable
+                    key-field="id"
+                    data={records}
+                    columns={columns}
+                    hide-checkbox-column
+                    resize-column-disabled>
+                </lightning-datatable>
+            </template>
+
+            <template lwc:elseif={hasSearched}>
+                <div class="slds-p-around_medium slds-text-align_center slds-text-color_weak">
+                    No metadata components match the current filters.
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
