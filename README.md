@@ -6,6 +6,8 @@
 
 It polls ~279 metadata types every 10 minutes via the Tooling API and standard SOQL, stores the results in a custom object, and presents them through a filterable Lightning Web Component dashboard.
 
+![Usage](./resources/in_use.png)
+
 ---
 
 ## Deployment
